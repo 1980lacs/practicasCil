@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta charset="ISO-8859-1">
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+		<script type="text/javascript" src="js/Fecha.js"></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+			<title>Página de inicio</title>
+		</head>
+	<body>
+		<style type="text/css">
+			.mifecha2 {
+			   border: 1px solid #ddd;
+			   padding: 3px;
+			   text-align: center;
+			   font-family:verdana, arial;
+			   font-size: 10pt;
+			   overflow: hidden;
+			   width: 100%
+			}
+			.mifecha2 .mesano{
+			   float: left;
+			   padding: 3px;
+			   font-weight: bold;
+			}
+			.mifecha2 .dia, .mifecha2 .diaactual{
+			   width: 20px;
+			   padding: 3px;
+			   margin-left: 3px;
+			   background-color: #ddd;
+			   float: left;
+			}
+			.mifecha2 .diaactual{
+			   background-color: #999;
+			   font-weight: bold;
+			}
+			
+			.caption {
+			    font-size: 20px;
+			    color: white; 
+			    text-align: center;
+			    background-color: #800000;
+			}
+			
+			.titulo {
+				padding: 20px;
+			}
+	
+		</style>
+		<script>
+			var fechaActual = new Fecha();
+			var mes = fechaActual.mes;
+			var ano = fechaActual.ano;
+		</script>
+		<div class="row">
+			<div class="col-sm-4">
+				<table class="table table-bordered table-collapsed">
+					<tr>
+						<th colspan="7" class="caption">
+							<span class="glyphicon glyphicon-circle-arrow-left" onClick="restarMes()"></span>
+							<span id="caption" class="titulo">
+								<script>captionMesAno()</script>
+							</span>
+							<span class="glyphicon glyphicon-circle-arrow-right" onClick="aumentarMes()"></span>
+						</th>
+					</tr>
+					<tr>
+						<script>
+							for (i=0; i < diasSemana.length; i++){
+								document.write('<th>' + diasSemana[i].substring(0,1) + '</th>');
+							}
+						</script>
+					</tr>
+					<tbody id="tabla">
+						<script>generarDias()</script>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</body>
+</html>
