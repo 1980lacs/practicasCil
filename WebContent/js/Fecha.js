@@ -9,7 +9,6 @@ var meses = new Array ('Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio',
 var diasSemana = new Array('Lunes','Martes','Miercoles','Jueves','Viernes','Sabado','Domingo');
 var diasMes = new Array(31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31);
 
-
 function Fecha(ano,mes,dia){
 	this.hoy = new Date();
 	this.dia = dia || this.hoy.getDate();
@@ -96,6 +95,9 @@ Fecha.prototype.getMesAnt = function(){
 function getMesAnt(){
 	var mesAnt;
 	mesAnt = this.mes - 1;
+	if (this.mes == 0){
+		mesAnt = 11;
+	}
 	return mesAnt;
 }
 

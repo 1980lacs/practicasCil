@@ -42,6 +42,7 @@
 			    color: white; 
 			    text-align: center;
 			    background-color: #800000;
+			    border: none;
 			}
 			
 			.titulo {
@@ -56,13 +57,17 @@
 		</script>
 		<div class="row">
 			<div class="col-sm-4">
-				<table class="table table-bordered table-collapsed">
-					<tr>
-						<th colspan="7" class="caption">
+				<table class="table">
+					<tr class="caption">
+						<th class="caption">
 							<span class="glyphicon glyphicon-circle-arrow-left" onClick="restarMes()"></span>
+						</th>
+						<th class="caption" colspan="5">
 							<span id="caption" class="titulo">
 								<script>captionMesAno()</script>
 							</span>
+						</th>
+						<th class="caption">
 							<span class="glyphicon glyphicon-circle-arrow-right" onClick="aumentarMes()"></span>
 						</th>
 					</tr>
