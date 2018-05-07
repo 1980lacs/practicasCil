@@ -8,13 +8,15 @@
 var meses = new Array ('Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre');
 var diasSemana = new Array('Lunes','Martes','Miercoles','Jueves','Viernes','Sabado','Domingo');
 var diasMes = new Array(31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31);
+var fecha;
+var hoy = new Date();
 
-function Fecha(ano,mes,dia){
-	this.hoy = new Date();
-	this.dia = dia || this.hoy.getDate();
-	this.mes = mes || this.hoy.getMonth();
-	this.ano = ano || this.hoy.getFullYear();
-	this.fecha = new Date(this.ano,this.mes,this.dia);
+function Fecha(a,m,d){
+	//this.hoy = new Date();
+	this.dia = d || hoy.getDate();
+	this.mes = m || hoy.getMonth();
+	this.ano = a || hoy.getFullYear();
+	fecha = new Date(this.ano,this.mes,this.dia);
 }
 
 function restarMes(){
@@ -42,6 +44,7 @@ function aumentarMes(){
 		this.mes++;
 		captionMesAno();
 		var list = document.getElementById("tabla");
+		//console.log(this.fecha);
 		while (list.hasChildNodes()) {   
 		    list.removeChild(list.firstChild);
 		}
@@ -109,38 +112,72 @@ function inicioMesAnt(){
 
 function generarDias(){
 	var x = 0;
+	var mesAnt = [];
+	var mesCurso = [];
+	var mesSig = [];
 	var dias = [];
 	for (i = this.inicioMesAnt(); i <= getMaxAnt(getMesAnt()); i++){
-		dias[x] = i;
+		mesAnt[x] = i;
 		x++;
 	}
-	for (i = 1 ; i <= getMaxAnt(this.mes); i++){
-		dias[x] = i;
-		x++;
+	for (i = 0 ; i < getMaxAnt(this.mes); i++){
+		mesCurso[i] = i+1;
+		dias = mesAnt.concat(mesCurso);
 	}
-	var resto = 42 - dias.length;
-	for (i = 1; i <= resto; i++){
-		dias[x]  = i;
-		x++;
+	var resto = 42 - (mesAnt.length + mesCurso.length);
+	for (i = 0; i < resto; i++){
+		mesSig[i] = i+1;
 	}
-	
+		
+	dias = dias.concat(mesSig);
 	var filas = 6;
 	var z = 0;
 	var element = document.getElementById("tabla");
+	var esteMes = false;
+	var text;
 	for (i = 0; i < filas; i++){
 		var tr = document.createElement("tr");
 		tr.setAttribute("id", "tr" + i);
 		element.appendChild(tr);
-		for (j = 0; j <= dias.length; j++){
+		console.log(x);
+		for (j = 0; j <= mesCurso.length; j++){
+			if (j <= 6){
+				console.log("z - " + z + "; mes - " + mesCurso.length);
+				if(x > 0 || z >= mesCurso.length){
+					var td = document.createElement("td");
+					tr.appendChild(td);
+					x--;
+				}else{
+					var td = document.createElement("td");
+					td.setAttribute("id", "td" + z);
+					tr.appendChild(td);	
+					text = document.createTextNode(mesCurso[z]);
+					td.setAttribute("onClick", "seleccionar(" + parseInt(text.data) + ")");
+					if (z < mesCurso.length){
+						td.appendChild(text);
+						z++;
+					}
+				}
+			}
+		}
+		/*for (j = 0; j <= dias.length; j++){
 			if (j <= 6){
 				var td = document.createElement("td");
+				td.setAttribute("id", "td" + z);
 				tr.appendChild(td);
-				var text = document.createTextNode(dias[z]);
+				var text;
+				text = document.createTextNode(dias[z]);
+				td.setAttribute("onClick", "seleccionar(" + parseInt(text.data) + ")");
 				if (z <= dias.length){
 					td.appendChild(text);
 					z++;
 				}
 			}
-		}
+		}*/
 	}
+}
+
+function seleccionar(dia){
+	fecha = new Fecha(this.ano,this.mes, dia);
+	console.log(fecha);
 }
