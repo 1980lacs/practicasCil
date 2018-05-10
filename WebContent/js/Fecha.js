@@ -10,15 +10,31 @@ var diasSemana = new Array('Lunes','Martes','Miercoles','Jueves','Viernes','Saba
 var diasMes = new Array(31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31);
 var fecha;
 var hoy = new Date();
+var seleccionados = [];
+//var id;
 
+/**
+ * Constructor de la clase
+ * 
+ * @param a: Este parámetro es el del año de la fecha
+ * @param m: Este parámetro es el del mes de la fecha
+ * @param d: Este parámetro es el del día de la fecha
+ * 
+ * @description: Si no se le pasan parámetros creara una fecha con el dia actual.
+ * Si se le pasan los parámetros se creará una fecha con los parámetros que le hemos pasado
+ */
 function Fecha(a,m,d){
-	//this.hoy = new Date();
 	this.dia = d || hoy.getDate();
 	this.mes = m || hoy.getMonth();
 	this.ano = a || hoy.getFullYear();
 	fecha = new Date(this.ano,this.mes,this.dia);
 }
 
+/**
+ * Funcion restarMes
+ * 
+ * @description: Esta función resta un mes a la fecha actual y actualiza el calendario a la nueva fecha
+ */
 function restarMes(){
 	if (mes > 0){
 		this.mes--;
@@ -39,12 +55,16 @@ function restarMes(){
 	generarDias();
 }
 
+/**
+ * Funcion aumentarMes
+ * 
+ * @description: Esta función aumenta un mes a la fecha actual y actualiza el calendario a la nueva fecha
+ */
 function aumentarMes(){
 	if (mes < 11){
 		this.mes++;
 		captionMesAno();
 		var list = document.getElementById("tabla");
-		//console.log(this.fecha);
 		while (list.hasChildNodes()) {   
 		    list.removeChild(list.firstChild);
 		}
@@ -61,13 +81,18 @@ function aumentarMes(){
 	
 }
 
+/**
+ * Función para ponerle el título al calendario
+ * 
+ * @description: 
+ */
 function captionMesAno(){
 	document.getElementById("caption").innerHTML = this.meses[this.mes] + ' ' + this.ano;
 }
 
 function getMaxAnt(mes){
 	var diaMaximo;
-	if (mes == 1 && (((getAno() % 4 == 0) && (getAno() % 100 != 0)) && (getAno() % 400 == 0)))
+	if (mes == 1 && (((getAno() % 4 == 0) && (getAno() % 100 != 0)) || (getAno() % 400 == 0)))
 		diaMaximo = 29;
 	else 
 		diaMaximo = this.diasMes[mes];
@@ -139,10 +164,8 @@ function generarDias(){
 		var tr = document.createElement("tr");
 		tr.setAttribute("id", "tr" + i);
 		element.appendChild(tr);
-		console.log(x);
 		for (j = 0; j <= mesCurso.length; j++){
 			if (j <= 6){
-				console.log("z - " + z + "; mes - " + mesCurso.length);
 				if(x > 0 || z >= mesCurso.length){
 					var td = document.createElement("td");
 					tr.appendChild(td);
@@ -150,9 +173,21 @@ function generarDias(){
 				}else{
 					var td = document.createElement("td");
 					td.setAttribute("id", "td" + z);
+					var id = td.getAttribute("id");
 					tr.appendChild(td);	
-					text = document.createTextNode(mesCurso[z]);
-					td.setAttribute("onClick", "seleccionar(" + parseInt(text.data) + ")");
+					//console.log(seleccionados[z-1]);
+					// aqui deberia comprobar si el dia, mes, y año esta en seleccionados
+					// y si está cambiarle el estilo a seleccionado
+					var d = new Fecha(this.ano,this.mes,mesCurso[z]);
+					//console.log(d);
+					//console.log(seleccionados.indexOf(d));
+					/*var found = seleccionados.find(function(element) {
+						  return element === f;
+						});
+					console.log(found);*/
+					text = document.createTextNode(mesCurso[z]); // pone el dia en el td
+					td.setAttribute("onClick", "seleccionar(" + parseInt(text.data) + ", " +  id + ")");
+					//td.setAttribute("onClick", "updateSeleccionados(" + seleccionados, d)+ ");/*"updateSeleccionados(" + seleccionados + ", " +  d + ")");*/
 					if (z < mesCurso.length){
 						td.appendChild(text);
 						z++;
@@ -160,24 +195,39 @@ function generarDias(){
 				}
 			}
 		}
-		/*for (j = 0; j <= dias.length; j++){
-			if (j <= 6){
-				var td = document.createElement("td");
-				td.setAttribute("id", "td" + z);
-				tr.appendChild(td);
-				var text;
-				text = document.createTextNode(dias[z]);
-				td.setAttribute("onClick", "seleccionar(" + parseInt(text.data) + ")");
-				if (z <= dias.length){
-					td.appendChild(text);
-					z++;
-				}
-			}
-		}*/
 	}
 }
 
-function seleccionar(dia){
+/*function updateSeleccionados (seleccionados, fecha) {
+    if (seleccionados.indexOf(fecha) === -1) {
+        seleccionados.push(fecha);
+        console.log('Nueva fecha : ' + fecha);
+    } else if (seleccionados.indexOf(fecha) > -1) {
+        console.log(fecha + ' ya existe en coleccionados.');
+    }
+}*/
+
+function seleccionar(dia, i){
 	fecha = new Fecha(this.ano,this.mes, dia);
-	console.log(fecha);
+	var id = ("td" + (parseInt(i.innerText)-1));
+	document.getElementById("" + id + "").setAttribute("class", "btn-info");
+	console.log(seleccionados.includes(fecha));
+	console.log(seleccionados);
+	seleccionados.push(fecha);
+	
 }
+
+function marcarDias(fecha){
+	
+}
+
+
+
+
+
+
+
+
+
+
+

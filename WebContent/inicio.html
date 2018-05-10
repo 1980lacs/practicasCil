@@ -38,10 +38,7 @@
 			}
 			
 			.caption {
-			    font-size: 20px;
-			    color: white; 
 			    text-align: center;
-			    background-color: #800000;
 			}
 			
 			.otro_mes{
@@ -51,6 +48,29 @@
 			.este_mes{
 				color:blue;
 			}
+			
+			.table td,span{
+				cursor: pointer;
+			}
+			
+			.modal {
+  				text-align: center;
+			}
+
+			@media screen and (min-width: 768px) { 
+  				.modal:before {
+    				display: inline-block;
+				    vertical-align: middle;
+				    content: " ";
+				    height: 100%;
+ 				}
+			}
+
+			.modal-dialog {
+					display: inline-block;
+					text-align: left;
+					vertical-align: middle;
+			}
 
 		</style>
 		<script>
@@ -58,34 +78,92 @@
 			var mes = fechaActual.mes;
 			var ano = fechaActual.ano;
 		</script>
-		<div class="row">
-			<div class="col-sm-4">
-				<table class="table">
-					<tr>
-						<th class="caption">
-							<span class="glyphicon glyphicon-circle-arrow-left" onClick="restarMes()"></span>
-						</th>
-						<th class="caption" colspan="5">
-							<span id="caption">
-								<script>captionMesAno()</script>
-							</span>
-						</th>
-						<th class="caption">
-							<span class="glyphicon glyphicon-circle-arrow-right" onClick="aumentarMes()"></span>
-						</th>
-					</tr>
-					<tr>
-						<script>
-							for (i=0; i < diasSemana.length; i++){
-								document.write('<th>' + diasSemana[i].substring(0,1) + '</th>');
-							}
-						</script>
-					</tr>
-					<tbody id="tabla">
-						<script>generarDias()</script>
-					</tbody>
-				</table>
+		<div class="panel panel-info">
+		<div class="panel panel-heading">
+			<p>Solicitud de proceso</p>
+		</div>
+		<div class="panel panel-body">
+			<div class="container">
+				<div class="row">
+					<div class="col-sm-4 col-sm-offset-1">
+						<form>
+						    <div class="form-group">
+						      	<label for="sel_proceso">Proceso</label>
+						      		<select class="form-control" id="sel_proceso">
+								        <option>Proceso 1</option>
+								        <option>Proceso 2</option>
+								        <option>Proceso 3</option>
+								        <option>Proceso 4</option>
+						      		</select>
+						 	</div>
+						 </form>
+					</div>
+					
+					<div class="col-sm-4 col-sm-offset-2">
+						<form>
+						    <div class="form-group">
+						      	<div class="panel panel-info">
+						      		<div class="panel-heading">
+						      			Método de planificación
+						      		</div>
+						      		<div class="panel-body caption">
+						      			<label class="radio-inline">
+									      	<input type="radio" name="optradio">Ciclico
+										</label>
+										<label class="radio-inline">
+									      	<input type="radio" name="optradio">Puntual
+										</label>
+										<label class="radio-inline">
+									      	<input type="radio" name="optradio">Siempre
+								   		</label>
+								   		<hr />
+								   		<button type="button" class="glyphicon glyphicon-calendar btn btn-info" data-toggle="modal" data-target="#modal_calen"></button>
+								   		Selecciona
+								   		<div id="modal_calen" class="modal fade" role="dialog">
+											<div class="modal-dialog">
+												<div class="modal-content">
+													<div class="modal-header">
+														<button type="button" class="close" data-dismiss="modal">&times;</button>
+													</div>
+													<div class="modal-body">
+														<table class="table">
+															<tr class="alert alert-warning">
+																<th>
+																	<span class="glyphicon glyphicon-circle-arrow-left" onClick="restarMes()"></span>
+																</th>
+																<th colspan="5" class="caption">
+																	<span id="caption">
+																		<script>captionMesAno()</script>
+																	</span>
+																</th>
+																<th>
+																	<span class="glyphicon glyphicon-circle-arrow-right" onClick="aumentarMes()"></span>
+																</th>
+															</tr>
+															<tr>
+																<script>
+																	for (i=0; i < diasSemana.length; i++){
+																		document.write('<th>' + diasSemana[i].substring(0,1) + '</th>');
+																	}
+																</script>
+															</tr>
+															<tbody id="tabla">
+																<script>generarDias()</script>
+															</tbody>
+														</table>
+													</div>
+												</div>
+											</div>
+										</div>
+						      		</div>
+						      	</div>
+						 	</div>
+						 </form>
+						 
+					</div>
+				</div>
 			</div>
+		</div>
 		</div>
 	</body>
 </html>
