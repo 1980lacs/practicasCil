@@ -10,7 +10,11 @@ var diasSemana = new Array('Lunes','Martes','Miercoles','Jueves','Viernes','Saba
 var diasMes = new Array(31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31);
 var fecha;
 var hoy = new Date();
+var dia = hoy.getDate();
+var mes = hoy.getMonth();
+var anyo = hoy.getFullYear();
 var seleccionados = [];
+var elemento = undefined;
 //var id;
 
 /**
@@ -23,21 +27,21 @@ var seleccionados = [];
  * @description: Si no se le pasan parámetros creara una fecha con el dia actual.
  * Si se le pasan los parámetros se creará una fecha con los parámetros que le hemos pasado
  */
-function Fecha(a,m,d){
+/*function Fecha(a,m,d){
 	this.dia = d || hoy.getDate();
 	this.mes = m || hoy.getMonth();
 	this.ano = a || hoy.getFullYear();
 	fecha = new Date(this.ano,this.mes,this.dia);
-}
+}*/
 
 /**
  * Funcion restarMes
  * 
  * @description: Esta función resta un mes a la fecha actual y actualiza el calendario a la nueva fecha
  */
-function restarMes(){
+function restarMes(){ //ok
 	if (mes > 0){
-		this.mes--;
+		mes--;
 		captionMesAno();
 		var list = document.getElementById("tabla");
 		while (list.hasChildNodes()) {   
@@ -45,7 +49,7 @@ function restarMes(){
 		}
 	} else {
 		mes = 11;
-		this.ano--;
+		anyo--;
 		captionMesAno();
 		var list = document.getElementById("tabla");
 		while (list.hasChildNodes()) {   
@@ -70,7 +74,7 @@ function aumentarMes(){
 		}
 	} else {
 		mes = 0;
-		this.ano++;
+		anyo++;
 		captionMesAno();
 		var list = document.getElementById("tabla");
 		while (list.hasChildNodes()) {   
@@ -87,7 +91,7 @@ function aumentarMes(){
  * @description: 
  */
 function captionMesAno(){
-	document.getElementById("caption").innerHTML = this.meses[this.mes] + ' ' + this.ano;
+	document.getElementById("caption").innerHTML = meses[mes] + ' ' + anyo;
 }
 
 function getMaxAnt(mes){
@@ -101,51 +105,97 @@ function getMaxAnt(mes){
 }
 
 function getDia(){
-	return this.dia;
+	return dia;
 }
 
 function getAno(){
-	return this.ano;
+	return anyo;
 }
 
 function getMes(){
-	return this.mes;
+	return mes;
 }
 
-Fecha.prototype.getInicioMes = function(){
+/*Fecha.prototype.getInicioMes = function(){
 	return this.fecha.getUTCDay();
 }
 
 Fecha.prototype.getMesAnt = function(){
 	return this.mesAnt = this.mes - 1;
-}
+}*/
 
 function getMesAnt(){
 	var mesAnt;
-	mesAnt = this.mes - 1;
-	if (this.mes == 0){
+	mesAnt = mes - 1;
+	if (mes == 0){
 		mesAnt = 11;
 	}
 	return mesAnt;
 }
 
 function inicioMesAnt(){
-	var inicioMes = new Date(this.ano,this.mes, 1);
+	var inicioMes = new Date(anyo,mes, 1);
 	var fin = ((getMaxAnt(getMesAnt())) - (inicioMes.getUTCDay() - 1));
+	//console.log(inicioMes.getUTCDay());
 	return fin;
 }
 
+//------------------------------
+
+function inicioMesAntBis(){
+	var inicioMes = new Date(anyo,mes, 1);
+	var fin = ((getMaxAnt(getMesAnt())) - (inicioMes.getUTCDay() - 1));
+	//console.log(inicioMes.getUTCDay());
+	return inicioMes.getUTCDay();
+}
+
+//----------------------------------
 function generarDias(){
+	var total = 42;
+	var diasAnt = inicioMesAntBis();
+	var contTr = 1;
+	var contTd = 1;
+	var element2 = document.getElementById("tabla");
+	var texto;
+	while (total > 0){
+		var tr = document.createElement("tr");
+		tr.setAttribute("id", "tr" + contTr);
+		element2.appendChild(tr);
+		contTr++;
+		console.log(diasAnt);
+		if (diasAnt > 0){
+			var td = document.createElement("td");
+			tr.appendChild(td);
+			diasAnt--;
+		} else {
+			var td = document.createElement("td");
+			td.setAttribute("id", "td" + contTd);
+			var id = td.getAttribute("id");
+			tr.appendChild(td);	
+			var d = new Date(anyo,mes,contTd);
+			texto = document.createTextNode(contTd); // pone el dia en el td
+			//if (compara(d))td.setAttribute("class", "btn-info");
+			td.setAttribute("onClick", "seleccionar(" + parseInt(texto.data) + ", " +  id + ")");
+			//td.appendChild(texto);
+			if (z < mesCurso.length){
+				td.appendChild(texto);
+				z++;
+			}
+			contTd++;
+		}
+		total--;
+	}
+	
 	var x = 0;
 	var mesAnt = [];
 	var mesCurso = [];
 	var mesSig = [];
 	var dias = [];
-	for (i = this.inicioMesAnt(); i <= getMaxAnt(getMesAnt()); i++){
-		mesAnt[x] = i;
+	for (i = inicioMesAnt(); i <= getMaxAnt(getMesAnt()); i++){
+		//mesAnt[x] = i;
 		x++;
 	}
-	for (i = 0 ; i < getMaxAnt(this.mes); i++){
+	for (i = 0 ; i < getMaxAnt(mes); i++){
 		mesCurso[i] = i+1;
 		dias = mesAnt.concat(mesCurso);
 	}
@@ -161,11 +211,14 @@ function generarDias(){
 	var esteMes = false;
 	var text;
 	for (i = 0; i < filas; i++){
+	/*var cont = mesCurso.length;
+	while (cont >= 0){*/
 		var tr = document.createElement("tr");
 		tr.setAttribute("id", "tr" + i);
 		element.appendChild(tr);
+		//cont--;
 		for (j = 0; j <= mesCurso.length; j++){
-			if (j <= 6){
+			if (j <= filas){
 				if(x > 0 || z >= mesCurso.length){
 					var td = document.createElement("td");
 					tr.appendChild(td);
@@ -175,19 +228,10 @@ function generarDias(){
 					td.setAttribute("id", "td" + z);
 					var id = td.getAttribute("id");
 					tr.appendChild(td);	
-					//console.log(seleccionados[z-1]);
-					// aqui deberia comprobar si el dia, mes, y año esta en seleccionados
-					// y si está cambiarle el estilo a seleccionado
-					var d = new Fecha(this.ano,this.mes,mesCurso[z]);
-					//console.log(d);
-					//console.log(seleccionados.indexOf(d));
-					/*var found = seleccionados.find(function(element) {
-						  return element === f;
-						});
-					console.log(found);*/
+					var d = new Date(anyo,mes,mesCurso[z]);
 					text = document.createTextNode(mesCurso[z]); // pone el dia en el td
+					if (compara(d))td.setAttribute("class", "btn-info");
 					td.setAttribute("onClick", "seleccionar(" + parseInt(text.data) + ", " +  id + ")");
-					//td.setAttribute("onClick", "updateSeleccionados(" + seleccionados, d)+ ");/*"updateSeleccionados(" + seleccionados + ", " +  d + ")");*/
 					if (z < mesCurso.length){
 						td.appendChild(text);
 						z++;
@@ -195,30 +239,37 @@ function generarDias(){
 				}
 			}
 		}
+		
 	}
 }
 
-/*function updateSeleccionados (seleccionados, fecha) {
-    if (seleccionados.indexOf(fecha) === -1) {
-        seleccionados.push(fecha);
-        console.log('Nueva fecha : ' + fecha);
-    } else if (seleccionados.indexOf(fecha) > -1) {
-        console.log(fecha + ' ya existe en coleccionados.');
-    }
-}*/
-
 function seleccionar(dia, i){
-	fecha = new Fecha(this.ano,this.mes, dia);
+	f = new Date(anyo,mes, dia);
 	var id = ("td" + (parseInt(i.innerText)-1));
-	document.getElementById("" + id + "").setAttribute("class", "btn-info");
-	console.log(seleccionados.includes(fecha));
-	console.log(seleccionados);
-	seleccionados.push(fecha);
 	
+	if (seleccionados[0] === undefined){
+		seleccionados.push(f);
+		document.getElementById("" + id + "").setAttribute("class", "btn-info");
+	} else{
+		var existe = compara(f);
+		if (!existe){
+			document.getElementById("" + id + "").setAttribute("class", "btn-info");
+			seleccionados.push(f);
+		} else{
+			document.getElementById("" + id + "").setAttribute("class", "none");
+			seleccionados.splice(elemento,1);
+		}
+	}
 }
 
-function marcarDias(fecha){
-	
+function compara(f){
+	for(i in seleccionados){
+		if (String(seleccionados[i]) === String(f)){
+			elemento = i;
+			return true;
+		}
+	}
+	return false;
 }
 
 
