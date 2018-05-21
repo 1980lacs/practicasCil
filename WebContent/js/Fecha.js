@@ -116,14 +116,6 @@ function getMes(){
 	return mes;
 }
 
-/*Fecha.prototype.getInicioMes = function(){
-	return this.fecha.getUTCDay();
-}
-
-Fecha.prototype.getMesAnt = function(){
-	return this.mesAnt = this.mes - 1;
-}*/
-
 function getMesAnt(){
 	var mesAnt;
 	mesAnt = mes - 1;
@@ -136,7 +128,6 @@ function getMesAnt(){
 function inicioMesAnt(){
 	var inicioMes = new Date(anyo,mes, 1);
 	var fin = ((getMaxAnt(getMesAnt())) - (inicioMes.getUTCDay() - 1));
-	//console.log(inicioMes.getUTCDay());
 	return fin;
 }
 
@@ -145,47 +136,11 @@ function inicioMesAnt(){
 function inicioMesAntBis(){
 	var inicioMes = new Date(anyo,mes, 1);
 	var fin = ((getMaxAnt(getMesAnt())) - (inicioMes.getUTCDay() - 1));
-	//console.log(inicioMes.getUTCDay());
 	return inicioMes.getUTCDay();
 }
 
 //----------------------------------
 function generarDias(){
-	var total = 42;
-	var diasAnt = inicioMesAntBis();
-	var contTr = 1;
-	var contTd = 1;
-	var element2 = document.getElementById("tabla");
-	var texto;
-	while (total > 0){
-		var tr = document.createElement("tr");
-		tr.setAttribute("id", "tr" + contTr);
-		element2.appendChild(tr);
-		contTr++;
-		console.log(diasAnt);
-		if (diasAnt > 0){
-			var td = document.createElement("td");
-			tr.appendChild(td);
-			diasAnt--;
-		} else {
-			var td = document.createElement("td");
-			td.setAttribute("id", "td" + contTd);
-			var id = td.getAttribute("id");
-			tr.appendChild(td);	
-			var d = new Date(anyo,mes,contTd);
-			texto = document.createTextNode(contTd); // pone el dia en el td
-			//if (compara(d))td.setAttribute("class", "btn-info");
-			td.setAttribute("onClick", "seleccionar(" + parseInt(texto.data) + ", " +  id + ")");
-			//td.appendChild(texto);
-			if (z < mesCurso.length){
-				td.appendChild(texto);
-				z++;
-			}
-			contTd++;
-		}
-		total--;
-	}
-	
 	var x = 0;
 	var mesAnt = [];
 	var mesCurso = [];
@@ -210,14 +165,14 @@ function generarDias(){
 	var element = document.getElementById("tabla");
 	var esteMes = false;
 	var text;
-	for (i = 0; i < filas; i++){
-	/*var cont = mesCurso.length;
-	while (cont >= 0){*/
+	for (var i = 0; i < filas; i++){
+	//var cont = mesCurso.length;
+	//while (cont >= 0){
 		var tr = document.createElement("tr");
 		tr.setAttribute("id", "tr" + i);
 		element.appendChild(tr);
 		//cont--;
-		for (j = 0; j <= mesCurso.length; j++){
+		for (var j = 0; j <= mesCurso.length; j++){
 			if (j <= filas){
 				if(x > 0 || z >= mesCurso.length){
 					var td = document.createElement("td");
@@ -231,6 +186,7 @@ function generarDias(){
 					var d = new Date(anyo,mes,mesCurso[z]);
 					text = document.createTextNode(mesCurso[z]); // pone el dia en el td
 					if (compara(d))td.setAttribute("class", "btn-info");
+					else if(seleccionados[0] === undefined) td.setAttribute("class", "none");
 					td.setAttribute("onClick", "seleccionar(" + parseInt(text.data) + ", " +  id + ")");
 					if (z < mesCurso.length){
 						td.appendChild(text);
@@ -241,6 +197,7 @@ function generarDias(){
 		}
 		
 	}
+	//}
 }
 
 function seleccionar(dia, i){
