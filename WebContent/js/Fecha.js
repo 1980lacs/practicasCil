@@ -201,7 +201,12 @@ function generarDias(){
 }
 
 function seleccionar(dia, i){
-	f = new Date(anyo,mes, dia);
+	var str = document.getElementById("hora").value;
+	var hora = parseInt(str.slice(0,2));
+	var minuto = parseInt(str.slice(3,5));
+	
+	console.log(hora + " -- " + minuto + " str = " + str + "Entero --- " + parseInt(hora));
+	f = new Date(anyo, mes, dia, hora, minuto);
 	var id = ("td" + (parseInt(i.innerText)-1));
 	
 	if (seleccionados[0] === undefined){

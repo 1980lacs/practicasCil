@@ -51,7 +51,6 @@ function asignarNombre(){
  */
 
 function agregarFechas(){
-	//fecha = seleccionados;
 	return seleccionados;
 }
 
@@ -89,8 +88,7 @@ function insertar(){
 			if (planning.fecha[0] === undefined){
 				text = document.createTextNode("");
 			} else{
-				for (j in planning[i]){
-					
+				for (j in planning[i]){	
 					text = document.createTextNode(planning.fecha[j].getDate() + "/" + planning.fecha[j].getMonth() + "/" + planning.fecha[j].getFullYear());
 					td.appendChild(text);
 					td.appendChild(document.createElement("p"));
@@ -112,10 +110,6 @@ function insertar(){
 
 function crearPlanning(){
 	insertar();
-	/*console.log(new Planning());
-	for (i in fecha){
-		console.log(fecha[i]);
-	}*/
 }
 
 

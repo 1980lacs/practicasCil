@@ -6,6 +6,7 @@
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 		<script type="text/javascript" src="js/Fecha.js"></script>
 		<script type="text/javascript" src="js/Planning.js"></script>
+		<script type="text/javascript" src="js/Controlador.js"></script>
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 			<title>Página de inicio</title>
@@ -78,6 +79,25 @@
 			var fechaActual = new Date();
 			var mes = fechaActual.getMonth();
 			var ano = fechaActual.getFullYear();
+			
+			$(document).ready(function(){
+			    $('#form_planning input[type=radio]').click(function(){
+			        switch (this.value){
+			        case "Ciclico":
+			        	activarCalen();
+			        	comprobarSel();
+			        	break;
+			        case "Puntual":
+			        	activarCalen();
+			        	comprobarSel();
+			        	break;
+			        case "Siempre":
+			        	desactivarCalen();
+			        	activarLanzar();
+			        	break;
+			        }
+			    });
+			});
 		</script>
 		<div class="panel panel-info">
 			<div class="panel panel-heading">
@@ -100,26 +120,27 @@
 							 </form>
 						</div>
 						<div class="col-sm-4 col-sm-offset-2">
-							<form>
+							<form id="form_planning">
 							    <div class="form-group">
 							      	<div class="panel panel-info">
 							      		<div class="panel-heading">
 							      			Método de planificación
 							      		</div>
 							      		<div class="panel-body caption">
+							
 							      			<label class="radio-inline">
-										      	<input type="radio" name="optradio" value="Ciclico">Ciclico
+										      	<input type="radio" name="optradio" value="Ciclico" checked>Ciclico
 											</label>
 											<label class="radio-inline">
-										      	<input type="radio" name="optradio" value="Puntual">Puntual
+										      	<input type="radio" name="optradio" value="Puntual"/>Puntual
 											</label>
 											<label class="radio-inline">
 										      	<input type="radio" name="optradio" value="Siempre">Siempre
 									   		</label>
 									   		<hr />
-									   		<button type="button" class="glyphicon glyphicon-calendar btn btn-info" data-toggle="modal" data-target="#modal_calen"></button>
+									   		<button id="btn_calen" type="button" class="glyphicon glyphicon-calendar btn btn-info" data-toggle="modal" data-target="#modal_calen"></button>
 									   		Selecciona
-									   		<button type="button" class="btn btn-success" onClick="crearPlanning()">Lanzar</button>
+									   		<button id="btn_lanzar" type="button" class="btn btn-disabled" disabled onClick="crearPlanning()">Lanzar</button>
 									   		<div id="modal_calen" class="modal fade" role="dialog">
 												<div class="modal-dialog">
 													<div class="modal-content">
@@ -155,11 +176,16 @@
 																<tfoot>
 																	<tr>
 																		<td colspan="7">
-																			<button type="button" class ="btn btn-success" data-dismiss="modal" aria-hidden="true"">Aceptar</button>
+																			<button type="button" onClick="comprobarSel()" class ="btn btn-success" data-dismiss="modal" aria-hidden="true"">Aceptar</button>
 																		</td>
 																	</tr>
 																</tfoot>
 															</table>
+															<div class="container">
+																<div class="col-sm-7 caption">
+																	Hora: <input id ="hora" type="time" name="hora" value="00:00"/> 
+																</div>
+															</div>
 														</div>
 													</div>
 												</div>
