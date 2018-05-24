@@ -2,9 +2,10 @@
 *   @author  Luis Alberto Curiel
 *   
 *   Clase Fecha Esta clase contruye una fecha de la que se pueden extraer
-*  				 sus parametros para usarlos con otras funciones
+*  	sus parametros para usarlos con otras funciones
 */ 
 
+var dias = new Array('Lun','Mar','Mie','Jue','Vie','Sab','Dom');
 var meses = new Array ('Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre');
 var diasSemana = new Array('Lunes','Martes','Miercoles','Jueves','Viernes','Sabado','Domingo');
 var diasMes = new Array(31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31);
@@ -14,25 +15,8 @@ var dia = hoy.getDate();
 var mes = hoy.getMonth();
 var anyo = hoy.getFullYear();
 var seleccionados = [];
+var marcados = [];
 var elemento = undefined;
-//var id;
-
-/**
- * Constructor de la clase
- * 
- * @param a: Este parámetro es el del año de la fecha
- * @param m: Este parámetro es el del mes de la fecha
- * @param d: Este parámetro es el del día de la fecha
- * 
- * @description: Si no se le pasan parámetros creara una fecha con el dia actual.
- * Si se le pasan los parámetros se creará una fecha con los parámetros que le hemos pasado
- */
-/*function Fecha(a,m,d){
-	this.dia = d || hoy.getDate();
-	this.mes = m || hoy.getMonth();
-	this.ano = a || hoy.getFullYear();
-	fecha = new Date(this.ano,this.mes,this.dia);
-}*/
 
 /**
  * Funcion restarMes
@@ -131,15 +115,6 @@ function inicioMesAnt(){
 	return fin;
 }
 
-//------------------------------
-
-function inicioMesAntBis(){
-	var inicioMes = new Date(anyo,mes, 1);
-	var fin = ((getMaxAnt(getMesAnt())) - (inicioMes.getUTCDay() - 1));
-	return inicioMes.getUTCDay();
-}
-
-//----------------------------------
 function generarDias(){
 	var x = 0;
 	var mesAnt = [];
@@ -147,7 +122,6 @@ function generarDias(){
 	var mesSig = [];
 	var dias = [];
 	for (i = inicioMesAnt(); i <= getMaxAnt(getMesAnt()); i++){
-		//mesAnt[x] = i;
 		x++;
 	}
 	for (i = 0 ; i < getMaxAnt(mes); i++){
@@ -166,12 +140,9 @@ function generarDias(){
 	var esteMes = false;
 	var text;
 	for (var i = 0; i < filas; i++){
-	//var cont = mesCurso.length;
-	//while (cont >= 0){
 		var tr = document.createElement("tr");
 		tr.setAttribute("id", "tr" + i);
 		element.appendChild(tr);
-		//cont--;
 		for (var j = 0; j <= mesCurso.length; j++){
 			if (j <= filas){
 				if(x > 0 || z >= mesCurso.length){
@@ -184,9 +155,9 @@ function generarDias(){
 					var id = td.getAttribute("id");
 					tr.appendChild(td);	
 					var d = new Date(anyo,mes,mesCurso[z]);
-					text = document.createTextNode(mesCurso[z]); // pone el dia en el td
+					text = document.createTextNode(mesCurso[z]);
 					if (compara(d))td.setAttribute("class", "btn-info");
-					else if(seleccionados[0] === undefined) td.setAttribute("class", "none");
+					else if(marcados[0] === undefined) td.setAttribute("class", "none");
 					td.setAttribute("onClick", "seleccionar(" + parseInt(text.data) + ", " +  id + ")");
 					if (z < mesCurso.length){
 						td.appendChild(text);
@@ -197,36 +168,31 @@ function generarDias(){
 		}
 		
 	}
-	//}
 }
 
 function seleccionar(dia, i){
-	var str = document.getElementById("hora").value;
-	var hora = parseInt(str.slice(0,2));
-	var minuto = parseInt(str.slice(3,5));
 	
-	console.log(hora + " -- " + minuto + " str = " + str + "Entero --- " + parseInt(hora));
-	f = new Date(anyo, mes, dia, hora, minuto);
+	f = new Date(anyo, mes, dia);
 	var id = ("td" + (parseInt(i.innerText)-1));
 	
-	if (seleccionados[0] === undefined){
-		seleccionados.push(f);
+	if (marcados[0] === undefined){
+		marcados.push(f);
 		document.getElementById("" + id + "").setAttribute("class", "btn-info");
 	} else{
 		var existe = compara(f);
 		if (!existe){
 			document.getElementById("" + id + "").setAttribute("class", "btn-info");
-			seleccionados.push(f);
+			marcados.push(f);
 		} else{
 			document.getElementById("" + id + "").setAttribute("class", "none");
-			seleccionados.splice(elemento,1);
+			marcados.splice(elemento,1);
 		}
 	}
 }
 
 function compara(f){
-	for(i in seleccionados){
-		if (String(seleccionados[i]) === String(f)){
+	for(i in marcados){
+		if (String(marcados[i]) === String(f)){
 			elemento = i;
 			return true;
 		}
@@ -234,6 +200,9 @@ function compara(f){
 	return false;
 }
 
+function modalSelec(){
+	
+}
 
 
 

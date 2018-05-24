@@ -4,6 +4,7 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<meta charset="ISO-8859-1">
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+		<link rel="stylesheet" href="css/main.css">
 		<script type="text/javascript" src="js/Fecha.js"></script>
 		<script type="text/javascript" src="js/Planning.js"></script>
 		<script type="text/javascript" src="js/Controlador.js"></script>
@@ -129,18 +130,19 @@
 							      		<div class="panel-body caption">
 							
 							      			<label class="radio-inline">
-										      	<input type="radio" name="optradio" value="Ciclico" checked>Ciclico
+										      	<input type="radio" name="optradio" value="Ciclico"/>Ciclico
 											</label>
 											<label class="radio-inline">
 										      	<input type="radio" name="optradio" value="Puntual"/>Puntual
 											</label>
 											<label class="radio-inline">
-										      	<input type="radio" name="optradio" value="Siempre">Siempre
+										      	<input type="radio" name="optradio" value="Siempre"/>Siempre
 									   		</label>
 									   		<hr />
-									   		<button id="btn_calen" type="button" class="glyphicon glyphicon-calendar btn btn-info" data-toggle="modal" data-target="#modal_calen"></button>
+									   		<button id="btn_calen" type="button" class="glyphicon glyphicon-calendar btn btn-info" data-toggle="modal"></button>
 									   		Selecciona
 									   		<button id="btn_lanzar" type="button" class="btn btn-disabled" disabled onClick="crearPlanning()">Lanzar</button>
+									   		<button id="btn_limpiar" type="button" class="btn btn-disabled" disabled onClick="borrarSelec()">Borrar</button>
 									   		<div id="modal_calen" class="modal fade" role="dialog">
 												<div class="modal-dialog">
 													<div class="modal-content">
@@ -190,11 +192,82 @@
 													</div>
 												</div>
 											</div>
+											<div id="modal_select" class="modal fade" role="dialog">
+												<div class="modal-dialog">
+													<div class="modal-content">
+														<div class="modal-header">
+															<button type="button" class="close" data-dismiss="modal">&times;</button>
+														</div>
+														<div class="modal-body">
+															<div class="container">
+																<div class="col-sm-7 caption">
+																	<span class="list-group-item list-group-item-warning separacion">Día</span>
+																	<span id="check_dias">
+																		<label class="form-check form-check-inline" for="check_lun">L</label>
+																		<input type="checkbox" id="check_lun" value="L"/>
+																		<label class="form-check form-check-inline" for="check_mar">M</label>
+																		<input type="checkbox" id="check_mar" value="M"/>
+																		<label class="form-check form-check-inline" for="check_mie">X</label>
+																		<input type="checkbox" id="check_mie" value="X"/>
+																		<label class="form-check form-check-inline" for="check_jue">J</label>
+																		<input type="checkbox" id="check_jue" value="J"/>
+																		<label class="form-check form-check-inline" for="check_vie">V</label>
+																		<input type="checkbox" id="check_vie" value="V"/>
+																		<label class="form-check form-check-inline" for="check_sab">S</label>
+																		<input type="checkbox" id="check_sab" value="S"/>
+																		<label class="form-check form-check-inline" for="check_dun">D</label>
+																		<input type="checkbox" id="check_dom" value="D"/>
+																		<br />
+																		<label class="form-check form-check-inline" for="check_todos">Todos</label>
+																		<input type="checkbox" id="check_todos" value="TODOS"/>
+																	</span>
+																	<span class="list-group-item list-group-item-warning separacion">Mes</span>
+																	<span id="chek_meses">
+																		<label class="form-check form-check-inline" for="check_enero">Ene</label>
+																		<input type="checkbox" id="check_enero" value="ENERO"/>
+																		<label class="form-check form-check-inline" for="check_febrero">Feb</label>
+																		<input type="checkbox" id="check_febrero" value="FEBRERO"/>
+																		<label class="form-check form-check-inline" for="check_marzo">Mar</label>
+																		<input type="checkbox" id="check_marzo" value="MARZO"/>
+																		<label class="form-check form-check-inline" for="check_abril">Abr</label>
+																		<input type="checkbox" id="check_abril" value="ABRIL"/>
+																		<label class="form-check form-check-inline" for="check_mayo">May</label>
+																		<input type="checkbox" id="check_mayo" value="MAYO"/>
+																		<label class="form-check form-check-inline" for="check_junio">Jun</label>
+																		<input type="checkbox" id="check_junio" value="JUNIO"/>
+																		<br />
+																		<label class="form-check form-check-inline" for="check_julio">Jul</label>
+																		<input type="checkbox" id="check_julio" value="JULIO"/>
+																		<label class="form-check form-check-inline" for="check_agosto">Ago</label>
+																		<input type="checkbox" id="check_agosto" value="AGOSTO"/>
+																		<label class="form-check form-check-inline" for="check_septiembre">Sep</label>
+																		<input type="checkbox" id="check_septiembre" value="SEPTIEMBRE"/>
+																		<label class="form-check form-check-inline" for="check_octubre">Oct</label>
+																		<input type="checkbox" id="check_octubre" value="OCTUBRE"/>
+																		<label class="form-check form-check-inline" for="check_noviembre">Nov</label>
+																		<input type="checkbox" id="check_noviembre" value="NOVIEMBRE"/>
+																		<label class="form-check form-check-inline" for="check_diciembre">Dic</label>
+																		<input type="checkbox" id="check_diciembre" value="DICIEMBRE"/>
+																		<br />
+																		<label class="form-check form-check-inline" for="check_todos">Todos</label>
+																		<input type="checkbox" id="check_todos" value="TODOS"/>
+																	</span>
+																	<span class="list-group-item list-group-item-warning separacion">Hora</span>
+																		<input id ="hora" type="time" name="hora" value="00:00"/>
+																		<button type="button" class ="btn btn-success">Añadir</button>
+																	<hr class="divisor">
+																	<label for="fechas">Fechas</label>
+  																	<textarea class="form-control resize-off" rows="5" id="fechas" disabled="disabled" ></textarea>
+																</div>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
 							      		</div>
 							      	</div>
 							 	</div>
 							 </form>
-							 
 						</div>
 					</div>
 				</div>
@@ -211,7 +284,10 @@
 								<tr class="alert alert-warning">
 									<td>ID</td>
 									<td>Proceso</td>
-									<td>Fecha</td>
+									<td>Dias</td>
+									<td>Meses</td>
+									<td>Horas</td>
+									<td>Minutos</td>
 									<td>Tipo de ejecución</td>
 									<td>Activo</td>
 								</tr>
