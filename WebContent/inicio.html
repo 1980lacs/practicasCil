@@ -1,301 +1,256 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<meta charset="ISO-8859-1">
-		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-		<link rel="stylesheet" href="css/main.css">
-		<script type="text/javascript" src="js/Fecha.js"></script>
-		<script type="text/javascript" src="js/Planning.js"></script>
-		<script type="text/javascript" src="js/Controlador.js"></script>
-		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-			<title>Página de inicio</title>
-		</head>
-	<body>
-		<style type="text/css">
-			.mifecha2 {
-			   border: 1px solid #ddd;
-			   padding: 3px;
-			   text-align: center;
-			   font-family:verdana, arial;
-			   font-size: 10pt;
-			   overflow: hidden;
-			   width: 100%
-			}
-			.mifecha2 .mesano{
-			   float: left;
-			   padding: 3px;
-			   font-weight: bold;
-			}
-			.mifecha2 .dia, .mifecha2 .diaactual{
-			   width: 20px;
-			   padding: 3px;
-			   margin-left: 3px;
-			   background-color: #ddd;
-			   float: left;
-			}
-			.mifecha2 .diaactual{
-			   background-color: #999;
-			   font-weight: bold;
-			}
-			
-			.caption {
-			    text-align: center;
-			}
-			
-			.otro_mes{
-				color: red;
-			}
-			
-			.este_mes{
-				color:blue;
-			}
-			
-			.table td,span{
-				cursor: pointer;
-			}
-			
-			.modal {
-  				text-align: center;
-			}
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta charset="UTF-8">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<link rel="stylesheet" href="css/main.css">
+<link rel="stylesheet" href="chosen.css">
+<link rel="stylesheet" href="docsupport/style.css">
+<link rel="stylesheet" href="docsupport/prism.css">
 
-			@media screen and (min-width: 768px) { 
-  				.modal:before {
-    				display: inline-block;
-				    vertical-align: middle;
-				    content: " ";
-				    height: 100%;
- 				}
-			}
+<script type="text/javascript" src="docsupport/jquery-3.2.1.min.js"></script>
+<script type="text/javascript" src="chosen.jquery.js"></script>
+<script type="text/javascript" src="docsupport/prism.js" charset="utf-8"></script>
+<script type="text/javascript" src="docsupport/init.js" charset="utf-8"></script>
+<script type="text/javascript" src="js/Fecha.js"></script>
+<script type="text/javascript" src="js/Planning.js"></script>
+<script type="text/javascript" src="js/Controlador.js"></script>
+<!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>-->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script>
+ 	$(document).ready(function(){
+		$(".chosen-select-dias").chosen({width: "50%"});
+		$(".chosen-select-process").chosen({no_results_text: "No se ha encontrado nada con "}, {width: "95%"}); 
+   	});
+</script>
+<title>PÃ¡gina de inicio</title>
+</head>
+<body>
+	<div class="panel panel-info">
+		<div class="panel panel-heading">
+			<p>Solicitud de proceso</p>
+		</div>
+		<div class="panel panel-body">
+			<div class="container">
+				<div class="row">
+					<div
+						class="col-sm-4 col-md-4 col-lg-4 col-sm-offset-1 col-md-offset-1 col-md-offset-1">
+						<form>
+							<div class="form-group">
+								<label for="sel_proceso">Proceso</label> 
+								<select data-placeholder="Selecciona un proceso" class="chosen-select-process" tabindex="4">
+									<option value=""></option>
+									<option>Proceso 1</option>
+									<option>Proceso 2</option>
+									<option>Proceso 3</option>
+									<option>Proceso 4</option>
+								</select>
+							</div>
+						</form>
+					</div>
+					<div
+						class="col-sm-4 col-md-4 col-lg-4 col-sm-offset-2 col-md-offset-2 col-md-offset-2 caption">
+						<form id="form_planning">
+							<div class="form-group">
+								<div class="panel panel-info">
+									<div class="panel-heading">MÃ©todo de planificaciÃ³n</div>
+									<div class="panel-body">
 
-			.modal-dialog {
-					display: inline-block;
-					text-align: left;
-					vertical-align: middle;
-			}
+										<label class="radio-inline"> <input type="radio"
+											name="optradio" value="Ciclico" />Ciclico
+										</label> <label class="radio-inline"> <input type="radio"
+											name="optradio" value="Puntual" />Puntual
+										</label> <label class="radio-inline"> <input type="radio"
+											name="optradio" value="Siempre" />Siempre
+										</label>
+										<hr />
+										<button id="btn_calen" type="button"
+											class="glyphicon glyphicon-calendar btn btn-info"
+											data-toggle="modal"></button>
+										Selecciona
+										<button id="btn_lanzar" type="button" class="btn btn-disabled"
+											disabled onClick="crearPlanning()">Lanzar</button>
+										<button id="btn_limpiar" type="button"
+											class="btn btn-disabled" disabled onClick="borrarSelec()">Borrar</button>
 
-		</style>
-		<script>
-			var fechaActual = new Date();
-			var mes = fechaActual.getMonth();
-			var ano = fechaActual.getFullYear();
-			
-			$(document).ready(function(){
-			    $('#form_planning input[type=radio]').click(function(){
-			        switch (this.value){
-			        case "Ciclico":
-			        	activarCalen();
-			        	comprobarSel();
-			        	break;
-			        case "Puntual":
-			        	activarCalen();
-			        	comprobarSel();
-			        	break;
-			        case "Siempre":
-			        	desactivarCalen();
-			        	activarLanzar();
-			        	break;
-			        }
-			    });
-			});
-		</script>
+									</div>
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+
+		</div>
 		<div class="panel panel-info">
 			<div class="panel panel-heading">
-				<p>Solicitud de proceso</p>
+				<p>Procesos panificados</p>
 			</div>
 			<div class="panel panel-body">
 				<div class="container">
-					<div class="row">
-						<div class="col-sm-4 col-sm-offset-1">
-							<form>
-							    <div class="form-group">
-							      	<label for="sel_proceso">Proceso</label>
-							      		<select class="form-control" id="sel_proceso">
-									        <option>Proceso 1</option>
-									        <option>Proceso 2</option>
-									        <option>Proceso 3</option>
-									        <option>Proceso 4</option>
-							      		</select>
-							 	</div>
-							 </form>
-						</div>
-						<div class="col-sm-4 col-sm-offset-2">
-							<form id="form_planning">
-							    <div class="form-group">
-							      	<div class="panel panel-info">
-							      		<div class="panel-heading">
-							      			Método de planificación
-							      		</div>
-							      		<div class="panel-body caption">
-							
-							      			<label class="radio-inline">
-										      	<input type="radio" name="optradio" value="Ciclico"/>Ciclico
-											</label>
-											<label class="radio-inline">
-										      	<input type="radio" name="optradio" value="Puntual"/>Puntual
-											</label>
-											<label class="radio-inline">
-										      	<input type="radio" name="optradio" value="Siempre"/>Siempre
-									   		</label>
-									   		<hr />
-									   		<button id="btn_calen" type="button" class="glyphicon glyphicon-calendar btn btn-info" data-toggle="modal"></button>
-									   		Selecciona
-									   		<button id="btn_lanzar" type="button" class="btn btn-disabled" disabled onClick="crearPlanning()">Lanzar</button>
-									   		<button id="btn_limpiar" type="button" class="btn btn-disabled" disabled onClick="borrarSelec()">Borrar</button>
-									   		<div id="modal_calen" class="modal fade" role="dialog">
-												<div class="modal-dialog">
-													<div class="modal-content">
-														<div class="modal-header">
-															<button type="button" class="close" data-dismiss="modal">&times;</button>
-														</div>
-														<div class="modal-body">
-															<table class="table">
-																<tr class="alert alert-warning">
-																	<th>
-																		<span class="glyphicon glyphicon-circle-arrow-left" onClick="restarMes()"></span>
-																	</th>
-																	<th colspan="5" class="caption">
-																		<span id="caption">
-																			<script>captionMesAno()</script>
-																		</span>
-																	</th>
-																	<th>
-																		<span class="glyphicon glyphicon-circle-arrow-right" onClick="aumentarMes()"></span>
-																	</th>
-																</tr>
-																<tr>
-																	<script>
-																		for (i=0; i < diasSemana.length; i++){
-																			document.write('<th>' + diasSemana[i].substring(0,1) + '</th>');
-																		}
-																	</script>
-																</tr>
-																<tbody id="tabla">
-																	<script>generarDias()</script>
-																	
-																</tbody>
-																<tfoot>
-																	<tr>
-																		<td colspan="7">
-																			<button type="button" onClick="comprobarSel()" class ="btn btn-success" data-dismiss="modal" aria-hidden="true"">Aceptar</button>
-																		</td>
-																	</tr>
-																</tfoot>
-															</table>
-															<div class="container">
-																<div class="col-sm-7 caption">
-																	Hora: <input id ="hora" type="time" name="hora" value="00:00"/> 
-																</div>
-															</div>
-														</div>
-													</div>
-												</div>
-											</div>
-											<div id="modal_select" class="modal fade" role="dialog">
-												<div class="modal-dialog">
-													<div class="modal-content">
-														<div class="modal-header">
-															<button type="button" class="close" data-dismiss="modal">&times;</button>
-														</div>
-														<div class="modal-body">
-															<div class="container">
-																<div class="col-sm-7 caption">
-																	<span class="list-group-item list-group-item-warning separacion">Día</span>
-																	<span id="check_dias">
-																		<label class="form-check form-check-inline" for="check_lun">L</label>
-																		<input type="checkbox" id="check_lun" value="L"/>
-																		<label class="form-check form-check-inline" for="check_mar">M</label>
-																		<input type="checkbox" id="check_mar" value="M"/>
-																		<label class="form-check form-check-inline" for="check_mie">X</label>
-																		<input type="checkbox" id="check_mie" value="X"/>
-																		<label class="form-check form-check-inline" for="check_jue">J</label>
-																		<input type="checkbox" id="check_jue" value="J"/>
-																		<label class="form-check form-check-inline" for="check_vie">V</label>
-																		<input type="checkbox" id="check_vie" value="V"/>
-																		<label class="form-check form-check-inline" for="check_sab">S</label>
-																		<input type="checkbox" id="check_sab" value="S"/>
-																		<label class="form-check form-check-inline" for="check_dun">D</label>
-																		<input type="checkbox" id="check_dom" value="D"/>
-																		<br />
-																		<label class="form-check form-check-inline" for="check_todos">Todos</label>
-																		<input type="checkbox" id="check_todos" value="TODOS"/>
-																	</span>
-																	<span class="list-group-item list-group-item-warning separacion">Mes</span>
-																	<span id="chek_meses">
-																		<label class="form-check form-check-inline" for="check_enero">Ene</label>
-																		<input type="checkbox" id="check_enero" value="ENERO"/>
-																		<label class="form-check form-check-inline" for="check_febrero">Feb</label>
-																		<input type="checkbox" id="check_febrero" value="FEBRERO"/>
-																		<label class="form-check form-check-inline" for="check_marzo">Mar</label>
-																		<input type="checkbox" id="check_marzo" value="MARZO"/>
-																		<label class="form-check form-check-inline" for="check_abril">Abr</label>
-																		<input type="checkbox" id="check_abril" value="ABRIL"/>
-																		<label class="form-check form-check-inline" for="check_mayo">May</label>
-																		<input type="checkbox" id="check_mayo" value="MAYO"/>
-																		<label class="form-check form-check-inline" for="check_junio">Jun</label>
-																		<input type="checkbox" id="check_junio" value="JUNIO"/>
-																		<br />
-																		<label class="form-check form-check-inline" for="check_julio">Jul</label>
-																		<input type="checkbox" id="check_julio" value="JULIO"/>
-																		<label class="form-check form-check-inline" for="check_agosto">Ago</label>
-																		<input type="checkbox" id="check_agosto" value="AGOSTO"/>
-																		<label class="form-check form-check-inline" for="check_septiembre">Sep</label>
-																		<input type="checkbox" id="check_septiembre" value="SEPTIEMBRE"/>
-																		<label class="form-check form-check-inline" for="check_octubre">Oct</label>
-																		<input type="checkbox" id="check_octubre" value="OCTUBRE"/>
-																		<label class="form-check form-check-inline" for="check_noviembre">Nov</label>
-																		<input type="checkbox" id="check_noviembre" value="NOVIEMBRE"/>
-																		<label class="form-check form-check-inline" for="check_diciembre">Dic</label>
-																		<input type="checkbox" id="check_diciembre" value="DICIEMBRE"/>
-																		<br />
-																		<label class="form-check form-check-inline" for="check_todos">Todos</label>
-																		<input type="checkbox" id="check_todos" value="TODOS"/>
-																	</span>
-																	<span class="list-group-item list-group-item-warning separacion">Hora</span>
-																		<input id ="hora" type="time" name="hora" value="00:00"/>
-																		<button type="button" class ="btn btn-success">Añadir</button>
-																	<hr class="divisor">
-																	<label for="fechas">Fechas</label>
-  																	<textarea class="form-control resize-off" rows="5" id="fechas" disabled="disabled" ></textarea>
-																</div>
-															</div>
-														</div>
-													</div>
-												</div>
-											</div>
-							      		</div>
-							      	</div>
-							 	</div>
-							 </form>
-						</div>
-					</div>
+					<table id="planning" class="table table-hover">
+						<thead>
+							<tr class="alert alert-warning">
+								<td>ID</td>
+								<td>Proceso</td>
+								<td>Dias</td>
+								<td>Meses</td>
+								<td>Horas</td>
+								<td>Minutos</td>
+								<td>Tipo de ejecuciÃ³n</td>
+								<td>Activo</td>
+							</tr>
+						</thead>
+					</table>
 				</div>
-				
 			</div>
-			<div class="panel panel-info">
-				<div class="panel panel-heading">
-					<p>Procesos panificados</p>
-				</div>
-				<div class="panel panel-body">
-					<div class="container">
-						<table id="planning" class="table table-hover">
-							<thead>
-								<tr class="alert alert-warning">
-									<td>ID</td>
-									<td>Proceso</td>
-									<td>Dias</td>
-									<td>Meses</td>
-									<td>Horas</td>
-									<td>Minutos</td>
-									<td>Tipo de ejecución</td>
-									<td>Activo</td>
+		</div>
+		<div id="modal_calen" class="modal fade" role="dialog">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal">&times;</button>
+					</div>
+					<div class="modal-body">
+						<table class="table">
+							<tr class="alert alert-warning">
+								<th><span class="glyphicon glyphicon-circle-arrow-left"
+									onClick="restarMes()"></span></th>
+								<th colspan="5" class="caption"><span id="caption">
+										<script>
+											captionMesAno()
+										</script>
+								</span></th>
+								<th><span class="glyphicon glyphicon-circle-arrow-right"
+									onClick="aumentarMes()"></span></th>
+							</tr>
+							<tr>
+								<script>
+									for (i = 0; i < diasSemana.length; i++) {
+										document.write('<th>'
+												+ diasSemana[i].substring(0, 1)
+												+ '</th>');
+									}
+								</script>
+							</tr>
+							<tbody id="tabla">
+								<script>
+									generarDias()
+								</script>
+
+							</tbody>
+							<tfoot>
+								<tr>
+									<td colspan="7" class="caption">
+										<button type="button" onClick="comprobarSel()"
+											class="btn btn-success" data-dismiss="modal"
+											aria-hidden="true"">Aceptar</button>
+									</td>
 								</tr>
-							</thead>
+							</tfoot>
 						</table>
+						<div class="container">
+							<div>
+								Hora: <input id="hora" type="time" name="hora" value="00:00" />
+							</div>
+						</div>
 					</div>
 				</div>
 			</div>
 		</div>
-	</body>
+		<div id="modal_select" class="modal fade" role="dialog">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal">&times;</button>
+					</div>
+					<div class="modal-body">
+						<div class="container-fluid">
+							<div class="caption">
+							<span class="list-group-item list-group-item-warning separacion">DÃ­a</span>
+								<div class="inline half">
+								<span id="check_dias"> <label
+									class="form-check form-check-inline" for="check_lun">L</label>
+									<input class="check1" type="checkbox" id="check_lun" value="L" /> <label
+									class="form-check form-check-inline" for="check_mar">M</label>
+									<input class="check1" type="checkbox" id="check_mar" value="M" /> <label
+									class="form-check form-check-inline" for="check_mie">X</label>
+									<input class="check1" type="checkbox" id="check_mie" value="X" /> <label
+									class="form-check form-check-inline" for="check_jue">J</label>
+									<input class="check1" type="checkbox" id="check_jue" value="J" /> <label
+									class="form-check form-check-inline" for="check_vie">V</label>
+									<input class="check1" type="checkbox" id="check_vie" value="V" /> <label
+									class="form-check form-check-inline" for="check_sab">S</label>
+									<input class="check1" type="checkbox" id="check_sab" value="S" /> <label
+									class="form-check form-check-inline" for="check_dun">D</label>
+									<input class="check1" type="checkbox" id="check_dom" value="D" /> <br /> <label
+									class="form-check form-check-inline" for="check_todos">Todos</label>
+									<input class="check1" type="checkbox" id="check_todos" value="TODOS" /></span>
+								</div>
+								<div class="inline half">
+									<label 
+									for="varios_dias"> Varios dÃ­as</label>
+									<select id="varios_dias" data-placeholder="Elige los dÃ­as..." class="chosen-select-dias" multiple tabindex="4">
+										<option value=""></option>
+										<script>
+											rellenarDias();
+										</script>
+									</select>
+									
+									<!--  <select id="varios_dias" class="form-control" size="1" multiple="multiple">
+										<script>
+											rellenarDias()
+										</script>
+									</select>-->
+								</div>
+								</span> <span
+									class="list-group-item list-group-item-warning separacion clearBoth">Mes</span>
+								<span id="check_meses"> <label
+									class="form-check form-check-inline" for="check_enero">Ene</label>
+									<input class="check2" type="checkbox" id="check_enero" value="ENERO" /> <label
+									class="form-check form-check-inline" for="check_febrero">Feb</label>
+									<input class="check2" type="checkbox" id="check_febrero" value="FEBRERO" /> <label
+									class="form-check form-check-inline" for="check_marzo">Mar</label>
+									<input class="check2" type="checkbox" id="check_marzo" value="MARZO" /> <label
+									class="form-check form-check-inline" for="check_abril">Abr</label>
+									<input class="check2" type="checkbox" id="check_abril" value="ABRIL" /> <label
+									class="form-check form-check-inline" for="check_mayo">May</label>
+									<input class="check2" type="checkbox" id="check_mayo" value="MAYO" /> <label
+									class="form-check form-check-inline" for="check_junio">Jun</label>
+									<input class="check2" type="checkbox" id="check_junio" value="JUNIO" /> <br />
+									<label class="form-check form-check-inline" for="check_julio">Jul</label>
+									<input class="check2" type="checkbox" id="check_julio" value="JULIO" /> <label
+									class="form-check form-check-inline" for="check_agosto">Ago</label>
+									<input class="check2" type="checkbox" id="check_agosto" value="AGOSTO" /> <label
+									class="form-check form-check-inline" for="check_septiembre">Sep</label>
+									<input class="check2" type="checkbox" id="check_septiembre" value="SEPTIEMBRE" />
+									<label class="form-check form-check-inline" for="check_octubre">Oct</label>
+									<input class="check2" type="checkbox" id="check_octubre" value="OCTUBRE" /> <label
+									class="form-check form-check-inline" for="check_noviembre">Nov</label>
+									<input class="check2" type="checkbox" id="check_noviembre" value="NOVIEMBRE" />
+									<label class="form-check form-check-inline"
+									for="check_diciembre">Dic</label> <input class="check2" type="checkbox"
+									id="check_diciembre" value="DICIEMBRE" /> <br /> <label
+									class="form-check form-check-inline" for="check_todos">Todos</label>
+									<input class="check2" type="checkbox" id="check_todos" value="TODOS" />
+								</span> <span
+									class="list-group-item list-group-item-warning separacion">Hora</span>
+								<input id="hora" type="time" name="hora" value="00:00" />
+								<button type="button" class="btn btn-success">AÃ±adir</button>
+								<hr class="divisor">
+								<label for="fechas">Fechas</label>
+								<textarea class="form-control resize-off" rows="5" id="fechas"
+									disabled="disabled"></textarea>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<script type="text/javascript">list_radio("form_planning");</script>
+	<script type="text/javascript">check_dias();</script>
+	<script type="text/javascript">check_meses();</script>
+</body>
 </html>

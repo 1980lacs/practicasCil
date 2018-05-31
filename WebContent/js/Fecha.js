@@ -200,8 +200,15 @@ function compara(f){
 	return false;
 }
 
-function modalSelec(){
-	
+function rellenarDias(){
+	var elemento = document.getElementById("varios_dias");
+	for (i = 1; i <= 31; i++){
+		var opt = document.createElement("option");
+		var txt = document.createTextNode(i);
+		opt.setAttribute("value", i);
+		opt.appendChild(txt);
+		elemento.appendChild(opt);
+	}
 }
 
 

@@ -152,6 +152,12 @@ function insertar(){
 	minuto.splice(0, minuto.length);
 	generarDias();
 	comprobarSel();
+	var radio = document.getElementsByName("optradio");
+	for (i in radio){
+		if (radio[i].checked){
+			radio[i].checked = false;
+		}
+	}
 }
 
 function crearPlanning(){

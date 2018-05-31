@@ -7,9 +7,92 @@
 }
 
 .separacion{
-	margin: 5px;
+	margin-bottom: 5px;
 }
 
 .resize-off{
 	resize: none;
+}
+
+div.inline { 
+	float:left; 
+}
+
+.clearBoth { 
+	clear:both; 
+}
+
+.half{
+	width: 50%;
+}
+
+.mifecha2 {
+	border: 1px solid #ddd;
+	padding: 3px;
+	text-align: center;
+	font-family: verdana, arial;
+	font-size: 10pt;
+	overflow: hidden;
+	width: 100%
+}
+
+.mifecha2 .mesano {
+	float: left;
+	padding: 3px;
+	font-weight: bold;
+}
+
+.mifecha2 .dia, .mifecha2 .diaactual {
+	width: 20px;
+	padding: 3px;
+	margin-left: 3px;
+	background-color: #ddd;
+	float: left;
+}
+
+.mifecha2 .diaactual {
+	background-color: #999;
+	font-weight: bold;
+}
+
+.caption {
+	text-align: center;
+}
+
+.otro_mes {
+	color: red;
+}
+
+.este_mes {
+	color: blue;
+}
+
+.table td, span {
+	cursor: pointer;
+}
+
+.modal {
+	text-align: center;
+}
+
+@media screen and (min-width: 768px) {
+	.modal:before {
+		display: inline-block;
+		vertical-align: middle;
+		content: " ";
+		height: 100%;
+	}
+}
+
+.modal-dialog {
+	display: inline-block;
+	text-align: left;
+	vertical-align: middle;
+}
+
+.chosen-container {
+  width: 250px;
+}
+.chosen-container-multi .chosen-choices li.search-field input[type="text"]{
+  height: 30px !important;
 }
